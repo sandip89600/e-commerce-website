@@ -1,431 +1,442 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>E-Com Apparel Store</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-      body {
-        background-color: #f8f9fa;
-        color: #212529;
-      }
-      .navbar {
-        background: linear-gradient(90deg, #0d6efd, #0b5ed7);
-      }
-      .card {
-        margin-bottom: 20px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-      .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-      .btn-primary {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-      }
-      .btn-outline-secondary {
-        border-color: #6c757d;
-        color: #6c757d;
-      }
-      .btn-outline-secondary:hover {
-        background-color: #6c757d;
-        color: #fff;
-      }
-      footer {
-        background: linear-gradient(90deg, #0d6efd, #0b5ed7);
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">E-Com Apparel Store</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>E-Com Apparel Store — Demo</title>
+
+  <!-- Bootstrap & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    :root{
+      --accent1:#0d6efd;
+      --card-radius:12px;
+    }
+    body{background:#f5f7fb;color:#222;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    .navbar { background: linear-gradient(90deg,var(--accent1), #0b5ed7); }
+    .card{ border-radius:var(--card-radius); transition: transform .18s ease, box-shadow .18s ease; }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 10px 20px rgba(13,110,253,.12); }
+    .badge-cart { position: absolute; transform: translate(50%,-50%); top:0; right:0; }
+    .product-img{ height:200px; object-fit:cover; border-top-left-radius:var(--card-radius); border-top-right-radius:var(--card-radius); }
+    .category-btn.active { box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+    footer{ background: linear-gradient(90deg,var(--accent1), #0b5ed7); color:white; }
+    @media (max-width:576px){ .product-img { height:160px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">Sandeep Apparel</a>
+
+    <div class="d-flex align-items-center ms-auto">
+      <input id="searchInput" class="form-control form-control-sm me-3" placeholder="Search products..." style="min-width:200px">
+      <button class="btn btn-outline-light me-2" id="clearFiltersBtn" title="Clear filters">
+        <i class="fa fa-times"></i>
+      </button>
+
+      <div class="position-relative me-2">
+        <button class="btn btn-light" id="cartButton" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas">
+          <i class="fa fa-shopping-cart"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav ms-auto">
-            <a class="nav-link active" aria-current="page" href="#shirts">Shirts</a>
-            <a class="nav-link" href="#pants">Pants</a>
-            <a class="nav-link" href="#shoes">Shoes</a>
-            <a class="nav-link" href="#Mobile">Mobile</a>
-            <a class="nav-link" href="#contact-us">Contact Us</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="container mt-5 pt-4">
-      <!-- Shirts Section -->
-      <h2 id="shirts" class="mb-4">Shirts</h2>
-      <div class="row">
-        <!-- Card 1 -->
-        <div class="col-md-4">
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hpcnRzfGVufDB8fDB8fHww"  class="card-img-top" alt=" ">
-            <div class="card-body">
-              <h5 class="card-title">Jocky T-shirt </h5>
-              <p class="card-text">Rs 1000</p>
-              <a href="#" class="btn btn-primary">Buy now</a>
-              <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-            </div>
-          </div>
-        </div>
-        <!-- Repeat for other cards -->
-        <!-- Card 1 -->
-        <div class="col-md-4">
-          <div class="card">
-            <img src="https://i.pinimg.com/736x/05/94/a5/0594a571e01ebe40bd717036e66369ce.jpg" class="card-img-top" alt=" ">
-            <div class="card-body">
-              <h5 class="card-title">Remond Shirt</h5>
-              <p class="card-text">Rs 1200</p>
-              <a href="#" class="btn btn-primary">Buy now</a>
-              <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-            </div>
-          </div>
-        </div>
-        <!-- Repeat for other cards -->
-        <!-- Card 1 -->
-        <div class="col-md-4">
-          <div class="card">
-            <img src="https://images.bewakoof.com/uploads/grid/app/types-of-shirts-for-men-bewakoof-blog-10-1610963791.jpg" class="card-img-top" alt=" ">
-            <div class="card-body">
-              <h5 class="card-title">WhereDobe shirst</h5>
-              <p class="card-text">Rs 1900</p>
-              <a href="#" class="btn btn-primary">Buy now</a>
-              <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-            </div>
-          </div>
-        </div>
-        <!-- Repeat for other cards -->
-        <!-- Card 1 -->
-        <div class="col-md-4">
-          <div class="card">
-            <img src="data:image/jpeg;base64,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" class="card-img-top" alt=" ">
-            <div class="card-body">
-              <h5 class="card-title">Rocky Brand Shirt</h5>
-              <p class="card-text">Rs 500</p>
-              <a href="#" class="btn btn-primary">Buy now</a>
-              <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-            </div>
-          </div>
-        </div>
-        <!-- Repeat for other cards -->
-        <!-- Card 1 -->
-        <div class="col-md-4">
-          <div class="card">
-            <img src="https://5.imimg.com/data5/SELLER/Default/2020/12/VV/HD/SB/22025055/surplus-denim-shirts-500x500.jpg" class="card-img-top" alt=" ">
-            <div class="card-body">
-              <h5 class="card-title">Denim Shirts</h5>
-              <p class="card-text">Rs 400</p>
-              <a href="#" class="btn btn-primary">Buy now</a>
-              <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-            </div>
-          </div>
-        </div>
-        <!-- Repeat for other cards -->
-        <!-- Card 1 -->
-        <div class="col-md-4">
-          <div class="card">
-            <img src="https://m.media-amazon.com/images/I/71rUFgw5ZsL._AC_UY1100_.jpg" class="card-img-top" alt=" ">
-            <div class="card-body">
-              <h5 class="card-title"> Vintage Plaid Western Shirt </h5>
-              <p class="card-text">Rs 900</p>
-              <a href="#" class="btn btn-primary">Buy now</a>
-              <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-            </div>
-          </div>
-        </div>
-        <!-- Repeat for other cards -->
+        <span id="cartCountBadge" class="badge bg-danger rounded-pill badge-cart d-none">0</span>
       </div>
 
-      <!-- Repeat for Pants and Shoes Sections -->
-<!-- Main Content -->
-<div class="container mt-5 pt-4">
-  <!-- Shirts Section -->
-  <h2 id="pants" class="mb-4">Pants</h2>
-  <div class="row">
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://images.meesho.com/images/products/394923192/lnfdy_512.webp" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title">Black Strech Pant</h5>
-          <p class="card-text">Rs 400</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
     </div>
-    <!-- Repeat for other cards -->
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://ghpc.in/cdn/shop/files/ghpc-polyester-pin-checks-pant-for-men-beige-ghpc-1-35288246223124.jpg?v=1705235846&width=2048" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title"> Men Beige Trousers</h5>
-          <p class="card-text">Rs 2500</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
+
+    <div class="collapse navbar-collapse" id="navCollapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a href="#shirts" class="nav-link">Shirts</a></li>
+        <li class="nav-item"><a href="#pants" class="nav-link">Pants</a></li>
+        <li class="nav-item"><a href="#shoes" class="nav-link">Shoes</a></li>
+        <li class="nav-item"><a href="#mobile" class="nav-link">Mobile</a></li>
+        <li class="nav-item"><a href="#contact-us" class="nav-link">Contact</a></li>
+      </ul>
     </div>
-    <!-- Repeat for other cards -->
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://apisap.fabindia.com/medias/20207764-01.jpg?context=bWFzdGVyfGltYWdlc3w5MjE1NnxpbWFnZS9qcGVnfGFEQXhMMmhpTnk4M09UWTJNVFF3TlRreU9UVXdNaTh5TURJd056YzJORjh3TVM1cWNHY3xhMDIzMDdhMGNjYjJjYjA1MzRmZTNlZGU2ZmRjMDBiZDNkMGNkY2Y5NjQ0MmM2YTA5NDBhZDZkZDRmOWM2MDAx" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title"> Black Cotton Full Length Drawstring Pants</h5>
-          <p class="card-text">Rs 2900</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Repeat for other cards -->
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://images.meesho.com/images/products/443715453/jrc2t_512.webp" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title"> Men Cargo pant</h5>
-          <p class="card-text">Rs 3000</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Repeat for other cards -->
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://assets.ajio.com/medias/sys_master/root/20241017/VTyO/6710e8a8f9b8ef490bc0f36e/-473Wx593H-700595679-grey-MODEL.jpg" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title">Lariya Pant</h5>
-          <p class="card-text">Rs 1100</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Repeat for other cards -->
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://freakins.com/cdn/shop/files/8JULY24_16785-Edit_694f771c-502c-4dc2-8044-949ca704845d.jpg?v=1721285414" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title">Panther Black cargo Pant</h5>
-          <p class="card-text">Rs 1500</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Repeat for other cards -->
   </div>
-  <!-- Repwat for shoes -->
-   <!-- Main Content -->
-   <div class="container mt-5 pt-4">
-    <!-- Shirts Section -->
-    <h2 id="shoes" class="mb-4">Shoes</h2>
-    <div class="row">
-      <!-- Card 1 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://assets.ajio.com/medias/sys_master/root/20240129/BECS/65b6bf0a16fd2c6e6ac45b86/-473Wx593H-467014777-tan-MODEL7.jpg" class="card-img-top" alt=" ">
-          <div class="card-body">
-            <h5 class="card-title">Casual Shoe</h5>
-            <p class="card-text">Rs 3000</p>
-            <a href="#" class="btn btn-primary">Buy now</a>
-            <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-          </div>
-        </div>
-      </div>
-      <!-- Card 1 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://5.imimg.com/data5/SELLER/Default/2022/11/KE/VX/MV/116453489/white-casual-shoes-for-men.jpg" class="card-img-top" alt=" ">
-          <div class="card-body">
-            <h5 class="card-title">White Casual Shoe</h5>
-            <p class="card-text">Rs 600</p>
-            <a href="#" class="btn btn-primary">Buy now</a>
-            <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-          </div>
-        </div>
-      </div>
-      <!-- Card 1 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://images-cdn.ubuy.co.in/66560187a825d31ad339baeb-wozhidaose-mens-shoes-mens-casual-shoes.jpg" class="card-img-top" alt=" ">
-          <div class="card-body">
-            <h5 class="card-title">Mozari Casual Shoe</h5>
-            <p class="card-text">Rs 800</p>
-            <a href="#" class="btn btn-primary">Buy now</a>
-            <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-          </div>
-        </div>
-      </div>
-      <!-- Card 1 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src=" https://www.brandkiosk.in/cdn/shop/products/6600682939.jpg?v=1708090205" class="card-img-top" alt=" ">
-          <div class="card-body">
-            <h5 class="card-title">Daliy Trendy Shoe</h5>
-            <p class="card-text">Rs 1200</p>
-            <a href="#" class="btn btn-primary">Buy now</a>
-            <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-          </div>
-        </div>
-      </div>
-      <!-- Card 1 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://images.pexels.com/photos/267301/pexels-photo-267301.jpeg?cs=srgb&dl=pexels-pixabay-267301.jpg&fm=jpg" class="card-img-top" alt=" ">
-          <div class="card-body">
-            <h5 class="card-title">Kurti Casual Shoe</h5>
-            <p class="card-text">Rs 2000</p>
-            <a href="#" class="btn btn-primary">Buy now</a>
-            <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-          </div>
-        </div>
-      </div>
-      <!-- Card 1 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://s.alicdn.com/@sc04/kf/H4c79cd4db4b64b42a946972441687a5aN.jpg_720x720q50.jpg" class="card-img-top" alt=" ">
-          <div class="card-body">
-            <h5 class="card-title">Sports Casual Shoe</h5>
-            <p class="card-text">Rs 400</p>
-            <a href="#" class="btn btn-primary">Buy now</a>
-            <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-          </div>
-        </div>
-      </div>
-      <!-- Repeat for other cards -->
-    </div>
-    
-    <!-- Repeat for Mobiles-->
-<!-- Main Content -->
-<div class="container mt-5 pt-4">
-  <!-- Shirts Section -->
-  <h2 id="Mobile" class="mb-4">Mobile</h2>
-  <div class="row">
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://opsg-img-cdn-gl.heytapimg.com/epb/202412/19/AceLeaXtntKw1AZf.png" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title">Oppo</h5>
-          <p class="card-text">Rs 13500</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://m.economictimes.com/thumb/msid-111538049,width-1200,height-1200,resizemode-4,imgsize-41154/best-phones-under-20000.jpg" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title">One Plus</h5>
-          <p class="card-text">Rs 20,000</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://images.hindustantimes.com/tech/img/2022/04/26/1600x900/Untitled_design_(1)_1647499713249_1650972125822.jpg" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title">Redmi</h5>
-          <p class="card-text">Rs 11500</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="data:image/jpeg;base64,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" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title">Infinix</h5>
-          <p class="card-text">Rs 10500</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://cdn.beebom.com/mobile/2024/01/Redmi-Note-13-Pro.png" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title">Motrolla</h5>
-          <p class="card-text">Rs 16500</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Card 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://www.91-cdn.com/hub/wp-content/uploads/2024/05/Vivo-T3-rear.jpg" class="card-img-top" alt=" ">
-        <div class="card-body">
-          <h5 class="card-title"> Vivo</h5>
-          <p class="card-text">Rs 22500</p>
-          <a href="#" class="btn btn-primary">Buy now</a>
-          <button type="button" class="btn btn-outline-secondary">Add to cart</button>
-        </div>
-      </div>
-    </div>
-    <!-- Repeat for other cards -->
+</nav>
+
+<!-- PAGE CONTENT -->
+<main class="container my-4">
+
+  <!-- Category Buttons -->
+  <div class="mb-4 d-flex flex-wrap gap-2">
+    <button class="btn btn-outline-primary category-btn active" data-cat="all">All</button>
+    <button class="btn btn-outline-primary category-btn" data-cat="Shirts">Shirts</button>
+    <button class="btn btn-outline-primary category-btn" data-cat="Pants">Pants</button>
+    <button class="btn btn-outline-primary category-btn" data-cat="Shoes">Shoes</button>
+    <button class="btn btn-outline-primary category-btn" data-cat="Mobile">Mobile</button>
   </div>
 
-      <!-- Contact Us Section -->
-      <div class="container my-5 p-4 bg-light rounded">
-        <h2 id="contact-us" class="mb-4">Contact Us</h2>
-        <form>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="name@example.com">
-            <div id="EmailAddr" class="form-text">
-              We never share your email address with anyone else. We respect your privacy.
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name">
-          </div>
-          <div class="mb-3">
-            <label for="message" class="form-label">Your Message</label>
-            <textarea class="form-control" id="message" rows="4"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+  <!-- PRODUCTS GRID -->
+  <div id="productsGrid" class="row g-3"></div>
+
+  <!-- Contact -->
+  <div id="contact-us" class="mt-5 p-4 bg-white rounded shadow-sm">
+    <h4>Contact Us</h4>
+    <form id="contactForm" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Name</label>
+        <input class="form-control" id="contactName" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input class="form-control" id="contactEmail" type="email" required>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Message</label>
+        <textarea id="contactMessage" class="form-control" rows="3" required></textarea>
+      </div>
+      <div class="col-12 text-end">
+        <button class="btn btn-primary" type="submit">Send</button>
+      </div>
+    </form>
+  </div>
+
+</main>
+
+<!-- OFFCANVAS CART -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="cartOffcanvasLabel"><i class="fa fa-shopping-cart me-2"></i>Your Cart</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <div id="cartItemsWrap" class="mb-3"></div>
+
+    <div class="mt-auto">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <strong>Total</strong>
+        <h5 id="cartTotal">Rs 0</h5>
+      </div>
+      <div class="d-flex gap-2">
+        <button id="clearCartBtn" class="btn btn-outline-secondary w-50">Clear</button>
+        <button id="checkoutBtn" class="btn btn-primary w-50">Checkout</button>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4 mt-5">
-      <p class="mb-2">&copy; 2024 - Sandeep Apparel Store | Made with ♥ in Nashik</p>
-      <div class="social-icons">
-        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+<!-- Simple Checkout Modal -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Checkout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-    </footer>
+      <div class="modal-body">
+        <p id="checkoutSummary"></p>
+        <p class="small text-muted">This demo does not process real payments. It simulates order placement and clears the cart.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmOrderBtn" class="btn btn-success">Confirm Order</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+<!-- FOOTER -->
+<footer class="mt-5 py-4 text-center">
+  <div class="container">
+    <p class="mb-1">&copy; 2025 Sandeep Apparel Store — Made with ♥ in Nashik</p>
+    <small>Demo: Frontend cart with localStorage persistence</small>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* =========================
+   PRODUCTS DATA (client-side)
+   ========================= */
+const PRODUCTS = [
+  // Shirts
+  { id: 's1', title: 'Jocky T-shirt', price: 1000, category: 'Shirts', img: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=800&auto=format&fit=crop&q=60' },
+  { id: 's2', title: 'Remond Shirt', price: 1200, category: 'Shirts', img: 'https://i.pinimg.com/736x/05/94/a5/0594a571e01ebe40bd717036e66369ce.jpg' },
+  { id: 's3', title: 'Rocky Brand Shirt', price: 500, category: 'Shirts', img: 'https://images.pexels.com/photos/428340/pexels-photo-428340.jpeg' },
+
+  // Pants
+  { id: 'p1', title: 'Black Stretch Pant', price: 400, category: 'Pants', img: 'https://images.meesho.com/images/products/394923192/lnfdy_512.webp' },
+  { id: 'p2', title: 'Men Beige Trousers', price: 2500, category: 'Pants', img: 'https://ghpc.in/cdn/shop/files/ghpc-polyester-pin-checks-pant-for-men-beige-ghpc-1-35288246223124.jpg' },
+
+  // Shoes
+  { id: 'sh1', title: 'Casual Shoe', price: 3000, category: 'Shoes', img: 'https://assets.ajio.com/medias/sys_master/root/20240129/BECS/65b6bf0a16fd2c6e6ac45b86/-473Wx593H-467014777-tan-MODEL7.jpg' },
+  { id: 'sh2', title: 'White Casual Shoe', price: 600, category: 'Shoes', img: 'https://5.imimg.com/data5/SELLER/Default/2022/11/KE/VX/MV/116453489/white-casual-shoes-for-men.jpg' },
+
+  // Mobile
+  { id: 'm1', title: 'Oppo', price: 13500, category: 'Mobile', img: 'https://opsg-img-cdn-gl.heytapimg.com/epb/202412/19/AceLeaXtntKw1AZf.png' },
+  { id: 'm2', title: 'Infinix', price: 10500, category: 'Mobile', img: 'https://cdn.beebom.com/wp-content/uploads/2024/01/Infinix-phone.png' }
+];
+
+/* ================
+   CART IMPLEMENTATION
+   ================ */
+const STORAGE_KEY = 'ecom_demo_cart_v1';
+let cart = loadCart(); // object { productId: {id, title, price, qty} }
+
+/* DOM references */
+const productsGrid = document.getElementById('productsGrid');
+const cartCountBadge = document.getElementById('cartCountBadge');
+const cartItemsWrap = document.getElementById('cartItemsWrap');
+const cartTotalEl = document.getElementById('cartTotal');
+const searchInput = document.getElementById('searchInput');
+const categoryBtns = document.querySelectorAll('.category-btn');
+const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+
+/* Bootstrapped components */
+const cartOffcanvasEl = document.getElementById('cartOffcanvas');
+const cartOffcanvas = new bootstrap.Offcanvas(cartOffcanvasEl);
+const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+
+/* INITIAL RENDER */
+renderProducts(PRODUCTS);
+renderCart();
+
+/* ---------- PRODUCTS RENDER ---------- */
+function renderProducts(list) {
+  productsGrid.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  list.forEach(p => {
+    const col = document.createElement('div');
+    col.className = 'col-sm-6 col-md-4 col-lg-3';
+    col.innerHTML = `
+      <div class="card h-100">
+        <img src="${p.img}" class="product-img w-100" alt="${escapeHtml(p.title)}">
+        <div class="card-body d-flex flex-column">
+          <h6 class="card-title mb-1">${escapeHtml(p.title)}</h6>
+          <p class="text-muted mb-2">Rs ${p.price}</p>
+          <div class="mt-auto d-flex gap-2">
+            <button class="btn btn-sm btn-primary w-100" data-buy="${p.id}"><i class="fa fa-bolt me-1"></i>Buy now</button>
+            <button class="btn btn-sm btn-outline-secondary" data-add="${p.id}"><i class="fa fa-cart-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    `;
+    fragment.appendChild(col);
+  });
+  productsGrid.appendChild(fragment);
+
+  // add event listeners for the newly rendered buttons
+  productsGrid.querySelectorAll('[data-add]').forEach(btn => {
+    btn.addEventListener('click', () => addToCart(btn.getAttribute('data-add')));
+  });
+  productsGrid.querySelectorAll('[data-buy]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      addToCart(btn.getAttribute('data-buy'));
+      cartOffcanvas.show();
+    });
+  });
+}
+
+/* ---------- CART FUNCTIONS ---------- */
+function addToCart(productId, qty = 1) {
+  const product = PRODUCTS.find(p => p.id === productId);
+  if (!product) return;
+  if (!cart[productId]) {
+    cart[productId] = { id: product.id, title: product.title, price: product.price, qty: 0 };
+  }
+  cart[productId].qty += qty;
+  saveCart();
+  renderCart();
+  // small visual feedback
+  flashBadge();
+}
+
+function updateQty(productId, newQty) {
+  if (!cart[productId]) return;
+  if (newQty <= 0) {
+    delete cart[productId];
+  } else {
+    cart[productId].qty = newQty;
+  }
+  saveCart();
+  renderCart();
+}
+
+function removeItem(productId) {
+  delete cart[productId];
+  saveCart();
+  renderCart();
+}
+
+function clearCart() {
+  cart = {};
+  saveCart();
+  renderCart();
+}
+
+/* ---------- RENDER CART UI ---------- */
+function renderCart() {
+  // update badge
+  const totalItems = Object.values(cart).reduce((s, it) => s + it.qty, 0);
+  if (totalItems > 0) {
+    cartCountBadge.classList.remove('d-none');
+    cartCountBadge.textContent = totalItems;
+  } else {
+    cartCountBadge.classList.add('d-none');
+  }
+
+  // items list
+  cartItemsWrap.innerHTML = '';
+  if (totalItems === 0) {
+    cartItemsWrap.innerHTML = '<p class="text-muted">Your cart is empty. Add items to get started.</p>';
+    cartTotalEl.textContent = 'Rs 0';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  Object.values(cart).forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'd-flex align-items-center justify-content-between mb-2 p-2 bg-white rounded shadow-sm';
+    row.innerHTML = `
+      <div class="me-2" style="width:56px;height:56px;overflow:hidden;border-radius:8px;">
+        <img src="${escapeHtml(PRODUCTS.find(p=>p.id===item.id).img)}" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="flex-grow-1 ms-2">
+        <div class="fw-semibold">${escapeHtml(item.title)}</div>
+        <div class="small text-muted">Rs ${item.price} x ${item.qty} = Rs ${item.price * item.qty}</div>
+      </div>
+      <div class="d-flex flex-column align-items-end">
+        <div class="btn-group btn-group-sm" role="group">
+          <button class="btn btn-outline-secondary" data-decr="${item.id}">-</button>
+          <button class="btn btn-outline-secondary disabled">${item.qty}</button>
+          <button class="btn btn-outline-secondary" data-incr="${item.id}">+</button>
+        </div>
+        <button class="btn btn-link text-danger small mt-2" data-remove="${item.id}">Remove</button>
+      </div>
+    `;
+    frag.appendChild(row);
+  });
+  cartItemsWrap.appendChild(frag);
+
+  // wire events
+  cartItemsWrap.querySelectorAll('[data-incr]').forEach(b => b.addEventListener('click', () => {
+    const id = b.getAttribute('data-incr'); addToCart(id, 1);
+  }));
+  cartItemsWrap.querySelectorAll('[data-decr]').forEach(b => b.addEventListener('click', () => {
+    const id = b.getAttribute('data-decr'); updateQty(id, cart[id].qty - 1);
+  }));
+  cartItemsWrap.querySelectorAll('[data-remove]').forEach(b => b.addEventListener('click', () => {
+    const id = b.getAttribute('data-remove'); removeItem(id);
+  }));
+
+  const totalPrice = Object.values(cart).reduce((s, it) => s + it.price * it.qty, 0);
+  cartTotalEl.textContent = 'Rs ' + totalPrice;
+}
+
+/* ---------- STORAGE ---------- */
+function loadCart() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    console.error('Could not load cart', e);
+    return {};
+  }
+}
+function saveCart() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+  } catch (e) {
+    console.error('Could not save cart', e);
+  }
+}
+
+/* ---------- UTILITIES ---------- */
+function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+function flashBadge() {
+  cartCountBadge.classList.remove('d-none');
+  cartCountBadge.classList.add('badge-blink');
+  setTimeout(()=>cartCountBadge.classList.remove('badge-blink'), 800);
+}
+
+/* ---------- SEARCH & FILTER ---------- */
+searchInput.addEventListener('input', () => applyFilters());
+categoryBtns.forEach(b => b.addEventListener('click', () => {
+  categoryBtns.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  applyFilters();
+}));
+clearFiltersBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  categoryBtns.forEach(x=>x.classList.remove('active'));
+  document.querySelector('.category-btn[data-cat="all"]').classList.add('active');
+  renderProducts(PRODUCTS);
+});
+
+function applyFilters() {
+  const q = searchInput.value.trim().toLowerCase();
+  const activeCat = document.querySelector('.category-btn.active')?.getAttribute('data-cat') || 'all';
+  const filtered = PRODUCTS.filter(p => {
+    const matchesCat = activeCat === 'all' ? true : p.category === activeCat;
+    const matchesQ = q === '' ? true : (p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+    return matchesCat && matchesQ;
+  });
+  renderProducts(filtered);
+}
+
+/* ---------- CHECKOUT FLOW (demo) ---------- */
+document.getElementById('checkoutBtn').addEventListener('click', () => {
+  const totalPrice = Object.values(cart).reduce((s, it) => s + it.price * it.qty, 0);
+  if (totalPrice === 0) {
+    alert('Your cart is empty.');
+    return;
+  }
+  // build summary
+  const summary = Object.values(cart).map(it => `${it.title} x ${it.qty} = Rs ${it.price * it.qty}`).join('<br>');
+  document.getElementById('checkoutSummary').innerHTML = summary + `<hr><strong>Total: Rs ${totalPrice}</strong>`;
+  checkoutModal.show();
+});
+
+document.getElementById('confirmOrderBtn').addEventListener('click', () => {
+  // simulate order placed
+  const orderId = 'ORD' + Date.now();
+  checkoutModal.hide();
+  cartOffcanvas.hide();
+  clearCart();
+  // simple confirmation
+  const content = document.createElement('div');
+  content.className = 'p-3';
+  content.innerHTML = `<h5 class="mb-2">Order placed ✅</h5>
+    <p class="mb-1 small">Your order id: <strong>${orderId}</strong></p>
+    <p class="small text-muted">This is a demo. Integrate server-side checkout to persist orders and process payments.</p>`;
+  const modal = new bootstrap.Modal(document.createElement('div'));
+  const wrapper = document.createElement('div');
+  wrapper.className = 'modal fade';
+  wrapper.innerHTML = `<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-body">${content.innerHTML}<div class="text-end"><button class="btn btn-primary" data-bs-dismiss="modal">Close</button></div></div></div></div>`;
+  document.body.appendChild(wrapper);
+  const newModal = new bootstrap.Modal(wrapper);
+  newModal.show();
+  wrapper.addEventListener('hidden.bs.modal', ()=> wrapper.remove());
+});
+
+/* Clear cart button */
+document.getElementById('clearCartBtn').addEventListener('click', () => {
+  if (confirm('Clear entire cart?')) clearCart();
+});
+
+/* Contact form demo */
+document.getElementById('contactForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  alert('Thanks ' + document.getElementById('contactName').value + ' — message received!');
+  e.target.reset();
+});
+
+/* Initial small UX touches */
+(function addSmallStyles() {
+  const style = document.createElement('style');
+  style.textContent = `.badge-blink{ animation: blinker .8s ease; } @keyframes blinker{ 0%{ transform: scale(1); } 50%{ transform: scale(1.2); } 100%{ transform: scale(1); } }`;
+  document.head.appendChild(style);
+})();
+</script>
+</body>
 </html>
