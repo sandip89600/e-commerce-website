@@ -1,0 +1,11 @@
+[
+  { "id": "s1", "title": "Jocky T-shirt", "price": 1000, "category": "Shirts", "img": "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=800&auto=format&fit=crop&q=60" },
+  { "id": "s2", "title": "Remond Shirt", "price": 1200, "category": "Shirts", "img": "https://i.pinimg.com/736x/05/94/a5/0594a571e01ebe40bd717036e66369ce.jpg" },
+  { "id": "s3", "title": "Rocky Brand Shirt", "price": 500, "category": "Shirts", "img": "https://images.pexels.com/photos/428340/pexels-photo-428340.jpeg" },
+  { "id": "p1", "title": "Black Stretch Pant", "price": 400, "category": "Pants", "img": "https://images.meesho.com/images/products/394923192/lnfdy_512.webp" },
+  { "id": "p2", "title": "Men Beige Trousers", "price": 2500, "category": "Pants", "img": "https://ghpc.in/cdn/shop/files/ghpc-polyester-pin-checks-pant-for-men-beige-ghpc-1-35288246223124.jpg" },
+  { "id": "sh1", "title": "Casual Shoe", "price": 3000, "category": "Shoes", "img": "https://assets.ajio.com/medias/sys_master/root/20240129/BECS/65b6bf0a16fd2c6e6ac45b86/-473Wx593H-467014777-tan-MODEL7.jpg" },
+  { "id": "sh2", "title": "White Casual Shoe", "price": 600, "category": "Shoes", "img": "https://5.imimg.com/data5/SELLER/Default/2022/11/KE/VX/MV/116453489/white-casual-shoes-for-men.jpg" },
+  { "id": "m1", "title": "Oppo", "price": 13500, "category": "Mobile", "img": "https://opsg-img-cdn-gl.heytapimg.com/epb/202412/19/AceLeaXtntKw1AZf.png" },
+  { "id": "m2", "title": "Infinix", "price": 10500, "category": "Mobile", "img": "https://cdn.beebom.com/wp-content/uploads/2024/01/Infinix-phone.png" }
+]
