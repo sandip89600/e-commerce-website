@@ -9,7 +9,42 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- navbar (copy from index) -->
+<!-- NAVBAR -->
+  <nav id="mainNav" class="navbar navbar-expand-lg navbar-theme sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="https://placehold.co/40x40/007bff/fff?text=S" alt="logo" class="brand-img"> Sandeep Store
+      </a>
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="electronics.html">Electronics</a></li>
+          <li class="nav-item"><a class="nav-link" href="clothes.html">Cloths</a></li>
+          <li class="nav-item"><a class="nav-link" href="shoes.html">Shoes</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html" id="navProfileLink">Profile</a></li>
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="cart.html">
+              <i class="fa fa-shopping-cart"></i>
+              <span id="navCartCount" class="badge rounded-pill bg-danger nav-badge d-none">0</span>
+            </a>
+          </li>
+          <li class="nav-item ms-2">
+            <button id="themeToggleBtn" class="btn btn-sm btn-theme"><i class="fa fa-moon"></i></button>
+          </li>
+          <li class="nav-item ms-2" id="authBtnsContainer">
+            <!-- Filled by script: login/signup or logout -->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <main class="container my-5">
     <h2>About Sandeep Store</h2>
     <p class="lead">We are passionate about tech & quality products. This demo site is built with HTML/CSS/JS and localStorage for demo auth and cart.</p>
