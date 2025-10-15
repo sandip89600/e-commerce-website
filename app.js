@@ -4,27 +4,29 @@
 // PRODUCTS array is now initialized empty, data will be loaded via AJAX
 let PRODUCTS = []; 
 const STORAGE_KEY = 'ecom_demo_cart_v1';
-const CUSTOM_PRODUCTS_KEY = 'ecom_custom_products'; // New key for user-added products
-let cart = loadCart(); // object { productId: {id, title, price, qty} }
+const CUSTOM_PRODUCTS_KEY = 'ecom_custom_products'; 
+const SESSION_KEY = 'ecom_user_session'; // New key for session data
+const USER_DB_KEY = 'ecom_user_db'; // New key for user database
+let cart = loadCart();
 
-/* DOM references (using vanilla JS selectors for compatibility with existing code) */
+// Seed the user database with an initial admin if it doesn't exist
+ensureInitialUsers();
+
+/* Global DOM and Modals */
 const productsGrid = document.getElementById('productsGrid');
 const cartCountBadge = document.getElementById('cartCountBadge');
 const cartItemsWrap = document.getElementById('cartItemsWrap');
 const cartTotalEl = document.getElementById('cartTotal');
 const searchInput = document.getElementById('searchInput');
 
-// REMOVED: const productAdderModal = new bootstrap.Modal(document.getElementById('productAdderModal'));
-let productAdderModal; // Declare the variable globally, but initialize it later
+let productAdderModal; 
+let loginModal; 
+let signupModal; 
 
 /* Bootstrapped components */
 const cartOffcanvasEl = document.getElementById('cartOffcanvas');
 const cartOffcanvas = new bootstrap.Offcanvas(cartOffcanvasEl);
-
-// Custom Modal for general messages (replaces alert/confirm)
 const messageModal = new bootstrap.Modal(document.createElement('div'));
-const messageModalContent = document.createElement('div');
-
 
 /* =========================
    JQUERY INITIALIZATION & DATA LOADING
@@ -36,7 +38,12 @@ $(document).ready(function() {
     if (productAdderModalEl) {
         productAdderModal = new bootstrap.Modal(productAdderModalEl);
     }
+    loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+    signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
     
+    // Check session status and update UI before loading products
+    updateNavbar();
+
     // Determine the current page's section from the <body> tag
     const currentSection = $('body').data('section') || 'Apparel';
     
@@ -49,10 +56,8 @@ $(document).ready(function() {
         // Apply initial filter based on the current page section
         let initialProductsList;
         if (currentSection === 'Apparel') {
-            // Show all apparel items, excluding Mobile
             initialProductsList = PRODUCTS.filter(p => p.category !== 'Mobile'); 
         } else if (currentSection === 'Electronics') {
-            // Show only Mobile (Electronic) items
             initialProductsList = PRODUCTS.filter(p => p.category === 'Mobile');
         } else {
             initialProductsList = PRODUCTS; // Fallback
@@ -89,39 +94,145 @@ $(document).ready(function() {
         applyFilters();
     });
 
-    /* Clear cart confirmation (Replaced native confirm) */
+    /* User Management Handlers */
+    $('#loginForm').on('submit', handleLogin);
+    $('#signupForm').on('submit', handleSignup);
+    $('#logoutBtn').on('click', handleLogout);
+
+    /* Clear cart confirmation */
     $('#clearCartBtn').on('click', () => {
         displayConfirmModal("Clear Cart", "Are you sure you want to clear the entire cart?", () => {
              clearCart();
-             // Optionally close the offcanvas
              cartOffcanvas.hide();
         });
     });
     
-    // New: Product Adder Submission Handler
+    // Product Adder Submission Handler
     $('#productAdderForm').on('submit', handleProductAddition);
 
 
-    /* Checkout Flow Enhancements (Replaced native alert for empty cart) */
+    /* Checkout Flow Enhancements */
     document.getElementById('checkoutBtn').addEventListener('click', () => {
         const totalPrice = Object.values(cart).reduce((s, it) => s + it.price * it.qty, 0);
         if (totalPrice === 0) {
             displayMessageModal("Cart Empty", "Your cart is empty. Please add items before checking out.");
             return;
         }
-        // ... rest of the checkout logic continues
         const summary = Object.values(cart).map(it => `${it.title} x ${it.qty} = Rs ${it.price * it.qty}`).join('<br>');
         document.getElementById('checkoutSummary').innerHTML = summary + `<hr><strong>Total: Rs ${totalPrice}</strong>`;
         new bootstrap.Modal(document.getElementById('checkoutModal')).show();
     });
 
-    /* Contact form demo (Replaced native alert) */
+    /* Contact form demo */
     document.getElementById('contactForm').addEventListener('submit', (e) => {
         e.preventDefault();
         displayMessageModal("Thank You!", 'Thanks ' + document.getElementById('contactName').value + ' — message received!');
         e.target.reset();
     });
 });
+
+/* =========================
+   USER & SESSION MANAGEMENT
+   ========================= */
+
+function ensureInitialUsers() {
+    let users = JSON.parse(localStorage.getItem(USER_DB_KEY)) || [];
+    if (!users.some(u => u.username === 'admin')) {
+        // Add a default Admin user if none exists
+        users.push({ username: 'admin', password: 'password', role: 'admin' });
+        localStorage.setItem(USER_DB_KEY, JSON.stringify(users));
+    }
+}
+
+function checkSession() {
+    return JSON.parse(sessionStorage.getItem(SESSION_KEY));
+}
+
+function updateNavbar() {
+    const user = checkSession();
+    
+    if (user) {
+        // Logged in state
+        $('#authButtons').html(`
+            <span class="navbar-text me-3 d-none d-lg-inline" style="color:white;">
+                Welcome, ${user.username}!
+            </span>
+            <button class="btn btn-sm btn-light" id="logoutBtn">
+                <i class="fa fa-sign-out-alt me-1"></i> Logout
+            </button>
+        `);
+        // Attach logout handler after rendering
+        $('#logoutBtn').on('click', handleLogout);
+
+        // Show/Hide Admin specific buttons
+        if (user.role === 'admin') {
+            $('.admin-feature').removeClass('d-none');
+        } else {
+            $('.admin-feature').addClass('d-none');
+        }
+
+    } else {
+        // Logged out state
+        $('#authButtons').html(`
+            <button class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                <i class="fa fa-sign-in-alt me-1"></i> Login
+            </button>
+            <button class="btn btn-sm btn-cta" data-bs-toggle="modal" data-bs-target="#signupModal">
+                <i class="fa fa-user-plus me-1"></i> Sign Up
+            </button>
+        `);
+        $('.admin-feature').addClass('d-none'); // Hide admin features when logged out
+    }
+}
+
+function handleLogin(e) {
+    e.preventDefault();
+    const username = e.target.loginUsername.value;
+    const password = e.target.loginPassword.value;
+    
+    let users = JSON.parse(localStorage.getItem(USER_DB_KEY));
+    const foundUser = users.find(u => u.username === username && u.password === password);
+
+    if (foundUser) {
+        // Success: Store user in session storage
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(foundUser));
+        loginModal.hide();
+        updateNavbar();
+        applyFilters(); // Re-filter in case admin features changed visibility
+        displayMessageModal("Welcome!", `Logged in as ${foundUser.username}. Role: ${foundUser.role.toUpperCase()}`);
+    } else {
+        displayMessageModal("Error", "Invalid username or password.");
+    }
+}
+
+function handleSignup(e) {
+    e.preventDefault();
+    const username = e.target.signupUsername.value;
+    const password = e.target.signupPassword.value;
+
+    let users = JSON.parse(localStorage.getItem(USER_DB_KEY));
+    if (users.some(u => u.username === username)) {
+        displayMessageModal("Error", "Username already exists.");
+        return;
+    }
+
+    const newUser = { username, password, role: 'user' };
+    users.push(newUser);
+    localStorage.setItem(USER_DB_KEY, JSON.stringify(users));
+
+    // Auto-login the new user
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(newUser));
+    signupModal.hide();
+    updateNavbar();
+    displayMessageModal("Success!", `Account created and logged in as ${username}.`);
+}
+
+function handleLogout() {
+    sessionStorage.removeItem(SESSION_KEY);
+    updateNavbar();
+    applyFilters(); // Re-filter to hide admin-added products if necessary
+    displayMessageModal("Logged Out", "You have been successfully logged out.");
+}
 
 
 /* ---------- PRODUCT ADDER LOGIC ---------- */
@@ -150,7 +261,6 @@ function handleProductAddition(e) {
         // 3. Re-render the menu to show the new product
         applyFilters(); 
         
-        // CORRECTION: Check if the modal instance exists before hiding
         if (productAdderModal) {
             productAdderModal.hide();
         }
@@ -198,7 +308,7 @@ function renderProducts(list) {
   });
 }
 
-/* ---------- CART FUNCTIONS ---------- */
+/* ---------- CART FUNCTIONS (Unchanged) ---------- */
 function addToCart(productId, qty = 1) {
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
@@ -208,7 +318,6 @@ function addToCart(productId, qty = 1) {
   cart[productId].qty += qty;
   saveCart();
   renderCart();
-  // small visual feedback
   flashBadge();
 }
 
@@ -235,9 +344,8 @@ function clearCart() {
   renderCart();
 }
 
-/* ---------- RENDER CART UI ---------- */
+/* ---------- RENDER CART UI (Unchanged) ---------- */
 function renderCart() {
-  // update badge
   const totalItems = Object.values(cart).reduce((s, it) => s + it.qty, 0);
   if (totalItems > 0) {
     cartCountBadge.classList.remove('d-none');
@@ -246,7 +354,6 @@ function renderCart() {
     cartCountBadge.classList.add('d-none');
   }
 
-  // items list
   cartItemsWrap.innerHTML = '';
   if (totalItems === 0) {
     cartItemsWrap.innerHTML = '<p class="text-muted">Your cart is empty. Add items to get started.</p>';
@@ -256,7 +363,6 @@ function renderCart() {
 
   const frag = document.createDocumentFragment();
   Object.values(cart).forEach(item => {
-    // Safely find image URL, handling case where product might not be in the PRODUCTS list (e.g., deleted product)
     const productImg = PRODUCTS.find(p => p.id === item.id)?.img || 'https://placehold.co/56x56/cccccc/333333?text=N/A';
     
     const row = document.createElement('div');
@@ -282,7 +388,7 @@ function renderCart() {
   });
   cartItemsWrap.appendChild(frag);
 
-  // wire events
+  // wire events (unchanged)
   cartItemsWrap.querySelectorAll('[data-incr]').forEach(b => b.addEventListener('click', () => {
     const id = b.getAttribute('data-incr'); addToCart(id, 1);
   }));
@@ -297,7 +403,7 @@ function renderCart() {
   cartTotalEl.textContent = 'Rs ' + totalPrice;
 }
 
-/* ---------- STORAGE (Cart) ---------- */
+/* ---------- STORAGE (Unchanged) ---------- */
 function loadCart() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -315,11 +421,9 @@ function saveCart() {
   }
 }
 
-/* ---------- STORAGE (Custom Products) ---------- */
 function loadCustomProducts() {
     try {
         const raw = localStorage.getItem(CUSTOM_PRODUCTS_KEY);
-        // Ensure price is parsed as a number if saved as a string
         const products = raw ? JSON.parse(raw) : [];
         return products.map(p => ({ ...p, price: parseFloat(p.price) }));
     } catch (e) {
@@ -337,7 +441,7 @@ function saveCustomProducts(products) {
 }
 
 
-/* ---------- UTILITIES ---------- */
+/* ---------- UTILITIES (Unchanged) ---------- */
 function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
 function flashBadge() {
@@ -346,9 +450,6 @@ function flashBadge() {
   setTimeout(()=>cartCountBadge.classList.remove('badge-blink'), 800);
 }
 
-/**
- * Custom Modal for displaying simple messages (replaces alert()).
- */
 function displayMessageModal(title, body) {
     const existingModal = document.querySelector('.custom-modal-wrapper');
     if (existingModal) existingModal.remove();
@@ -376,9 +477,6 @@ function displayMessageModal(title, body) {
     wrapper.addEventListener('hidden.bs.modal', ()=> wrapper.remove());
 }
 
-/**
- * Custom Modal for confirmation (replaces confirm()).
- */
 function displayConfirmModal(title, body, onConfirm) {
     const existingModal = document.querySelector('.custom-modal-wrapper');
     if (existingModal) existingModal.remove();
@@ -414,30 +512,28 @@ function displayConfirmModal(title, body, onConfirm) {
 }
 
 
-/* ---------- SEARCH, FILTER & SORT (MODIFIED) ---------- */
+/* ---------- SEARCH, FILTER & SORT (Unchanged) ---------- */
 
 function applyFilters() {
-    // Use jQuery selectors inside the document ready block to get dynamic values
     const q = $('#searchInput').val().trim().toLowerCase();
     const activeCat = $('.category-btn.active').data('cat') || 'all';
     const sortBy = $('#sortSelect').val(); 
     const currentSection = $('body').data('section') || 'Apparel';
     
-    // 1. Start with the full product list (static + custom)
     let filtered = PRODUCTS.slice(); 
     
     // Step 1: Filter by section (Apparel or Electronics)
     filtered = filtered.filter(p => {
         let matchesSection = true;
         if (currentSection === 'Apparel') {
-            matchesSection = (p.category !== 'Mobile'); // Exclude Mobile
+            matchesSection = (p.category !== 'Mobile'); 
         } else if (currentSection === 'Electronics') {
-            matchesSection = (p.category === 'Mobile'); // Include only Mobile
+            matchesSection = (p.category === 'Mobile');
         }
         return matchesSection;
     });
 
-    // Step 2: Filter by Category (based on the buttons visible on the page)
+    // Step 2: Filter by Category 
     filtered = filtered.filter(p => {
         const matchesCat = activeCat === 'all' ? true : p.category === activeCat;
         return matchesCat;
@@ -462,23 +558,21 @@ function applyFilters() {
 }
 
 
-// --- ORIGINAL CHECKOUT AND CONTACT FORM LOGIC (kept separate for clarity) ---
+// --- ORIGINAL CHECKOUT AND CONTACT FORM LOGIC (Unchanged) ---
 
 document.getElementById('confirmOrderBtn').addEventListener('click', () => {
-  // simulate order placed
   const orderId = 'ORD' + Date.now();
   new bootstrap.Modal(document.getElementById('checkoutModal')).hide();
   cartOffcanvas.hide();
   clearCart();
   
-  // simple confirmation using the modal pattern
   const content = `<h5 class="mb-2">Order placed ✅</h5>
     <p class="mb-1 small">Your order id: <strong>${orderId}</strong></p>
     <p class="small text-muted">This is a demo. Integrate server-side checkout to persist orders and process payments.</p>`;
   displayMessageModal("Order Confirmed", content);
 });
 
-/* Initial small UX touches */
+/* Initial small UX touches (Unchanged) */
 (function addSmallStyles() {
   const style = document.createElement('style');
   style.textContent = `.badge-blink{ animation: blinker .8s ease; } @keyframes blinker{ 0%{ transform: scale(1); } 50%{ transform: scale(1.2); } 100%{ transform: scale(1); } }`;
